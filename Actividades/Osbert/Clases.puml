@@ -4,6 +4,7 @@ Class Obra {
   -String nombre;
   -String estilo;
   -char tipo;
+  -float precioMax
   +Obra();
 }
 Class Compra{
@@ -45,6 +46,5 @@ Venta *-- Vendedor : vende
 Almacen --> Venta :usa
 
 Obra --* Compra : usa
-
 
 @enduml
