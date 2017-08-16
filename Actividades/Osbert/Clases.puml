@@ -1,0 +1,50 @@
+@startuml
+Class Obra {
+  -String ID;
+  -String nombre;
+  -String estilo;
+  -char tipo;
+  +Obra();
+}
+Class Compra{
+  -String cliente;
+  -float precio;
+  +void generarReporte();
+  -Obra obra;
+  +Compra();
+}
+Class Almacen{
+  -Obra obras[];
+  +alta();
+  +baja();
+  +consulta();
+  +Almacen();
+}
+
+Class Venta{
+  -Cliente cliente;
+  -Vendedor vendedor;
+  -Obra obra;
+  -float precio;
+  -Bool concreatada;
+  +Venta();
+}
+Class Vendedor{
+  -String nombre;
+  -String Dirección;
+  +Vendedor();
+}
+Class Cliente{
+  -String nombre
+  +Cliente();
+}
+
+Almacen -- Compra : guarda
+Venta *-- Cliente : adquiere
+Venta *-- Vendedor : vende
+Almacen --> Venta :usa
+
+Obra --* Compra : usa
+
+
+@enduml
