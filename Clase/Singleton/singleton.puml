@@ -1,0 +1,10 @@
+@startuml
+  Class Singleton<<singleton>>{
+    #static Singleton *instance
+    +void operation()
+    +static Singleton* getInstance()
+    -Singleton(){}
+  }
+
+  Singleton *-- Singleton
+@enduml
