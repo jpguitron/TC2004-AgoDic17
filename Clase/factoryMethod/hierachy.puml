@@ -1,0 +1,17 @@
+@startuml
+  abstract Class Creator{
+    -virtual Product* createProduct(int type);
+    +Product * factoryMethod(int type);
+  }
+
+  Class CreatorA{
+    +Product* createProduct(int type)
+  }
+  Class Product{
+  +void operation();
+  +void operation2();
+  }
+  Creator <|.. CreatorA
+  Product -- CreatorA
+
+@enduml
