@@ -1,0 +1,46 @@
+@startuml
+
+  class Mundo{
+      +Mundo(string nombreMundo);
+      +string nombreMundo;
+  }
+  abstract Personaje{
+      +Personaje() = default;
+      +Personaje(string nombre);
+      +string nombre;
+      +int telefono;
+      +string correo;
+      +Mundo* mundo;
+      +virtual Personaje* clone();
+  }
+
+  class ClonPersonaje<<template>>{
+    +Personaje* clone()
+  }
+  class Princesa{
+      Princesa(string n);
+      Princesa(const Princesa& p);
+      void grita();
+      Personaje* clone();
+  }
+
+  class Villano{
+      +Villano(string n);
+      +Villano(const Villano& p);
+      +void secuestra();
+      +Personaje* clone();
+  }
+
+  class Heroe{
+      +Heroe(string n);
+      +Heroe(const Heroe& p);
+      +void rescata();
+      +Personaje* clone();
+  }
+
+  ClonPersonaje <|-- Heroe
+  ClonPersonaje  <|-- Princesa
+  ClonPersonaje  <|-- Villano
+  Personaje <|.. ClonPersonaje
+  Mundo --* Personaje
+@enduml
