@@ -1,0 +1,61 @@
+@startuml
+
+class Computadoras{
+		#string procesador;
+		#string ram;
+		#string disco;
+		#string so;
+		#bool ensamble;
+		#bool empaquetar;
+		#static Computadoras* instance;
+		#Computadoras();
+		+void componentes();
+		+void ensamblado();
+		+virtual ~Computadoras();
+		+void sop();
+		+void empaque();
+		+Static Computadoras* getInstance();
+		+Tipo* factoryMethod();
+}
+
+
+class ClonComputadoras<<base,Tipo>>{
+	#ClonComputadoras();
+	+base * clonar();
+}
+
+
+class Desktop{
+	#Desktop();
+}
+
+class Laptop{
+		#Laptop();
+}
+
+class Netbook{
+	#Netbook();
+}
+
+class Tablet{
+	#Tablet();
+}
+
+class ServerP{
+	#ServerP();
+}
+
+class ServerT{
+	#ServerT();
+}
+
+ClonComputadoras <|-- Laptop
+ClonComputadoras <|-- Desktop
+ClonComputadoras <|-- Netbook
+ClonComputadoras <|-- Tablet
+ClonComputadoras <|-- ServerP
+ClonComputadoras <|-- ServerT
+Computadoras <|-- ClonComputadoras
+Computadoras*-Computadoras
+
+@enduml
