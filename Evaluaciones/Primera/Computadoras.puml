@@ -58,4 +58,12 @@ ClonComputadoras <|-- ServerT
 Computadoras <|-- ClonComputadoras
 Computadoras*-Computadoras
 
+
+Computadoras -- Laptop : <<friend>>
+Computadoras -- Desktop : <<friend>>
+Computadoras -- Netbook : <<friend>>
+Computadoras -- Tablet : <<friend>>
+Computadoras -- ServerP : <<friend>>
+Computadoras -- ServerT : <<friend>>
+
 @enduml

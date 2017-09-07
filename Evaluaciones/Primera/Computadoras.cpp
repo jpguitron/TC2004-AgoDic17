@@ -65,6 +65,5 @@ int main()
 	server->sop();
 	server->empaque();
 	ServerP * server2 = dynamic_cast<ServerP*>(server->clonar());
-
   return 0;
 }

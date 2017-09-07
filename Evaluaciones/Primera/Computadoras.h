@@ -17,7 +17,6 @@ class Computadoras
 
 public:
 	virtual ~Computadoras (){};
-
 	static Computadoras* getInstance();
 
 	template<class Tipo>
