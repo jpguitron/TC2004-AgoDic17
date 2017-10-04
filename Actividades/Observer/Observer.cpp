@@ -51,26 +51,46 @@ public:
   }
 };
 
-class trump : public Subject
+class Trump : public Subject
 {
 public:
-  trump()=default;
-	trump(string n) : Subject(n){}
+  Trump()=default;
+	Trump(string n) : Subject(n){}
 };
-class pena : public Subject
+class Pena : public Subject
 {
 public:
-  pena()=default;
-  pena(string n) : Subject(n){}
+  Pena()=default;
+  Pena(string n) : Subject(n){}
 };
-class lider : public Subject
+class Lider : public Subject
 {
 public:
-  lider()=default;
-  lider(string n) : Subject(n){}
+  Lider()=default;
+  Lider(string n) : Subject(n){}
 };
 
 int main()
 {
+  Trump* trump = new Trump("trump");
+  Pena* pena = new Pena("Pena");
+  Lider* lider = new Lider("Gran hermano");
+  Televisa* televisa = new Televisa();
+  MVS* mvs = new MVS();
+  Noticias* noticias = new Noticias();
+  Radio* radio = new Radio();
 
+  trump->setObservador(televisa);
+  trump->setObservador(mvs);
+  trump->setObservador(radio);
+  trump->setObservador(noticias);
+
+  pena->setObservador(televisa);
+  pena->setObservador(radio);
+
+  lider->setObservador(noticias);
+
+  trump->saySomething("Build the wall");
+  pena->saySomething("1>5");
+  lider->saySomething(">o<");
 }
