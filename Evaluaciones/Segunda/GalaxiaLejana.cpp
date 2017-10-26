@@ -36,18 +36,9 @@ protected:
       }
       cout << "Ya no hay espacio para agregar elementos" <<endl;
     }
+
     Iterator<Tipo>* getIterator();
-
-    Tipo at(int pos)
-    {
-      return array[pos];
-    }
-    Tipo* atp(int pos)
-    {
-      return &array[pos];
-    }
-    void restart(){cont=0;}
-
+    Tipo* at(int pos){return &array[pos];}
 };
 
 template<class Tipo>
@@ -64,20 +55,14 @@ class Iterator
         return true;
       return false;
     }
-    Tipo next()
+    Tipo* data()
     {
-      return coll.at(cont++);
+      cont+=1;
+      return coll.at(cont-1);
     }
-    Tipo* nextp()
-    {
-      return coll.atp(cont++);
-    }
-    Tipo* dataAt(int a)
-    {
-      return coll.atp(a);
-    }
-
-
+    void restart(){cont=0;}
+    int getCont(){return cont;}
+    void setCont(int c){cont=c;}
 };
 
 template<class Tipo>
@@ -86,22 +71,8 @@ Iterator<Tipo>* Collection<Tipo>::getIterator()
   return new Iterator<Tipo>(*this);
 }
 
-template<class Tipo, class F>
-void find_if(Iterator<Tipo>* it, F f)
-{
-  int num;
-  while(it->hasNext())
-  {
-    Tipo num = it->next();
-    if(f(num))
-      cout << "Busqueda: "<<num << endl;
-  }
-
-}
-
 class GalaxiaLejana
 {
-
    public:
     GalaxiaLejana(){}
 
@@ -131,13 +102,14 @@ class Objeto
   Objeto(){}
 
 protected:
-  //string tipo;
+  string tipo;
   int x=0;
   int y=0;
   int s=1;
   int blocked[SIZEX][SIZEY]={{0}};
 public:
   void stop(){s=0;}
+  string getTipo(){return tipo;}
   void block(int x, int y)
   {
     blocked[x][y]=1;
@@ -163,7 +135,6 @@ public:
       y=-1;
       x=-1;
     }
-
   }
   int getX(){return x;}
   int getY(){return y;}
@@ -171,70 +142,61 @@ public:
 
 class Spacecrafts:public Objeto
 {
-
 	 public:
 		Spacecrafts(){}
 };
 
 class Asteroids:public Objeto
 {
-
 	 public:
 		Asteroids(){}
 };
 
 class Planets:public Objeto
 {
-
 	 public:
 		Planets(){}
 };
 
 class PES:public Spacecrafts
 {
-
 	 public:
-		PES(){}
+		PES(){tipo="ES";}
 };
 class CS:public Spacecrafts
 {
-
 	 public:
-		CS(){}
+		CS(){tipo="CS";}
 };
 
 class POS:public Spacecrafts
 {
-
 	 public:
-		POS(){}
+		POS(){tipo="OS";}
 };
 
 class SM:public Asteroids
 {
-
 	 public:
-		SM(){}
+		SM(){tipo="SM";}
 };
 
 class IM:public Asteroids
 {
-
 	 public:
-		IM(){}
+		IM(){tipo="IM";}
 };
 
 class DP:public Planets
 {
-
 	 public:
-		DP(){}
+		DP(){tipo="DP";}
 };
 
 class EA:public Planets
 {
 public:
-		EA(){}
+		EA(){tipo="EA";}
 };
 
 class Observer
@@ -250,7 +212,6 @@ public:
   void actualizar(string actualizacion){cout<<"Colisión detectada: "<<actualizacion<<endl;}
 };
 
-
 class Tablero
 {
 protected:
@@ -259,6 +220,7 @@ protected:
   Collection<Objeto> *objetos = new Collection<Objeto>;
   Iterator<Objeto>* it = objetos->getIterator();
   Iterator<Objeto>* it2 = objetos->getIterator();
+  Iterator<Objeto>* it3 = objetos->getIterator();
 public:
   void setObjetos(Objeto s){objetos->addElement(s);}
 
@@ -266,62 +228,77 @@ public:
   {
     srand (time(NULL));
     int run=1;
+    cout<<"********************************"<<endl;
+    cout<<"*****Detección de colisiones****"<<endl;
+    cout<<"********************************"<<endl;
     while(run)
     {
 
-    for(int cont1=0;cont1<CANT;cont1++)
-    {
-      Objeto* obj = it->dataAt(cont1);
-      obj->move();
-    }
-
-    int x1;
-    int x2;
-    int y1;
-    int y2;
-
-    for(int cont1=0;cont1<CANT;cont1++)
-    {
-      for(int cont2=0;cont2<CANT;cont2++)
-      {
-        if(!(cont1==cont2))
+        while(it->hasNext())
         {
-          x1=it->dataAt(cont1)->getX();
-          x2=it->dataAt(cont2)->getX();
-          y1=it->dataAt(cont1)->getY();
-          y2=it->dataAt(cont2)->getY();
-          if(x1==x2&&y1==y2 && x1!=-1 &&y1!=-1)
+          Objeto* obj = it->data();
+          obj->move();
+        }
+        it->restart();
+
+        int x1;
+        int x2;
+        int y1;
+        int y2;
+
+        while(it->hasNext())
+        {
+          Objeto *obj1 = it->data();
+          it2->setCont(it->getCont());
+          while(it2->hasNext())
           {
-            it->dataAt(cont1)->stop();
-            it->dataAt(cont2)->stop();
-            tab[x1][y1]=1;
-            cout<<"Colisión en: "<<x1<<" "<<y1<<endl;
-            for(int cont3=0;cont3<CANT;cont3++)
+            Objeto *obj2 = it2->data();
+            if(obj1!=obj2)
             {
-              it->dataAt(cont3)->block(x1,y1);
+              x1=obj1->getX();
+              x2=obj2->getX();
+              y1=obj1->getY();
+              y2=obj2->getY();
+
+            if(x1==x2&&y1==y2 && x1!=-1 &&y1!=-1)
+            {
+              obj1->stop();
+              obj2->stop();
+              tab[x1][y1]=1;
+              cout<<"**Colisión en "<<x1<<" "<<y1<<" de "<<obj1->getTipo()<<" con "<<obj2->getTipo()<<"**"<<endl;
+              while(it3->hasNext())
+              {
+                Objeto *obj3 = it3->data();
+                obj3->block(x1,y1);
+              }
+              it3->restart();
             }
           }
+
+          }
+          it2->restart();
         }
-      }
-    }
-    int cont4;
-    int num =0;
-    for(cont4=0;cont4<CANT;cont4++)
-    {
-      if(it->dataAt(cont4)->getStatus())
-        num+=it->dataAt(cont4)->getStatus();
-    }
-    if(num==1||num==0)
-      run=0;
-  }
-  for(int x=0;x<SIZEX;x++)
-  {
-    for(int y=0;y<SIZEY;y++)
-    {
-      cout<<tab[x][y]<<" ";
-    }
-    cout<<endl;
-  }
+          it->restart();
+
+          int num =0;
+          while(it->hasNext())
+          {
+            Objeto* obj = it->data();
+            num+=obj->getStatus();
+          }
+          it->restart();
+          if(num==1||num==0)
+            run=0;
+        }
+        cout<<"********************************"<<endl;
+        for(int x=0;x<SIZEX;x++)
+        {
+          cout<<"******";
+          for(int y=0;y<SIZEY;y++)
+            cout<<tab[y][x]<<" ";
+          cout<<"******"<<endl;
+        }
+        cout<<"********************************"<<endl;
   }
 
 };
@@ -352,5 +329,4 @@ int main(int argc, char** argv)
   tab->setObjetos(*p2);
 
   tab->start();
-
 }
