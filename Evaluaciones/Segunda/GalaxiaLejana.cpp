@@ -233,7 +233,6 @@ public:
     cout<<"********************************"<<endl;
     while(run)
     {
-
         while(it->hasNext())
         {
           Objeto* obj = it->data();
@@ -293,7 +292,7 @@ public:
         cout<<"********************************"<<endl;
         for(int x=0;x<SIZEX;x++)
         {
-          cout<<"******";
+          cout<<"***** ";
           for(int y=0;y<SIZEY;y++)
             cout<<tab[y][x]<<" ";
           cout<<"******"<<endl;
