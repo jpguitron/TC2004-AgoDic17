@@ -2,6 +2,7 @@
 #include <string>
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 
 #define CANT 7
 #define SIZEX 10
@@ -107,6 +108,7 @@ protected:
   int y=0;
   int s=1;
   int blocked[SIZEX][SIZEY]={{0}};
+  int intentos[4]={{0}};
 public:
   void stop(){s=0;}
   string getTipo(){return tipo;}
@@ -118,7 +120,7 @@ public:
   {
     return s;
   }
-  void move()
+  /*void move()
   {
     if(s)
     {
@@ -134,6 +136,84 @@ public:
     {
       y=-1;
       x=-1;
+    }
+  }*/
+
+  void begin()
+  {
+    y = rand() % SIZEY;
+    x = rand() % SIZEX;
+    while(blocked[x][y]==1)
+    {
+      y = rand() % SIZEY;
+      x = rand() % SIZEX;
+    }
+  }
+  void move()
+  {
+    if(s)
+    {
+      int opt = rand() % 4;
+      for(int x=0;x<4;x++)
+        intentos[x]=0;
+      move(opt);
+    }
+    else
+    {
+      y=-1;
+      x=-1;
+    }
+  }
+  void move(int a)
+  {
+    switch(a)
+    {
+      case 0:
+        x++;
+      break;
+      case 1:
+        x--;
+      break;
+      case 2:
+        y++;
+      break;
+      case 3:
+        y--;
+      break;
+    }
+    if(blocked[x][y]==1 || x==-1 || x==SIZEX ||y==-1|| y==SIZEY)
+    {
+      revert(a);
+      int opt = rand() % 4;
+      int cant=0;
+      for(int x=0;x<4;x++)
+        cant+=intentos[x];
+      intentos[a] = 1;
+      if(cant==4)
+        {
+          cout<<"Teletransportación"<<endl;
+          begin();
+        }
+      else
+        move(opt);
+    }
+  }
+  void revert(int a)
+  {
+    switch(a)
+    {
+      case 0:
+        x--;
+      break;
+      case 1:
+        x++;
+      break;
+      case 2:
+        y--;
+      break;
+      case 3:
+        y++;
+      break;
     }
   }
   int getX(){return x;}
@@ -228,8 +308,14 @@ public:
   {
     srand (time(NULL));
     int run=1;
+    while(it->hasNext())
+    {
+      Objeto* obj = it->data();
+      obj->begin();
+    }
+    it->restart();
     cout<<"********************************"<<endl;
-    cout<<"*****Detección de colisiones****"<<endl;
+    cout<<"**** Detección de colisiones ***"<<endl;
     cout<<"********************************"<<endl;
     while(run)
     {
@@ -237,7 +323,19 @@ public:
         {
           Objeto* obj = it->data();
           obj->move();
+          /*if(obj->getX()!=-1)
+          cout<<obj->getX()<<" "<<obj->getY()<<endl;*/
         }
+        //cout<<"------------------"<<endl;
+        /*cout<<"********************************"<<endl;
+        for(int x=0;x<SIZEX;x++)
+        {
+          cout<<"***** ";
+          for(int y=0;y<SIZEY;y++)
+            cout<<tab[y][x]<<" ";
+          cout<<"******"<<endl;
+        }
+        cout<<"********************************"<<endl;*/
         it->restart();
 
         int x1;
@@ -264,7 +362,7 @@ public:
               obj1->stop();
               obj2->stop();
               tab[x1][y1]=1;
-              cout<<"**Colisión en "<<x1<<" "<<y1<<" de "<<obj1->getTipo()<<" con "<<obj2->getTipo()<<"**"<<endl;
+              cout<<"* Colisión en "<<x1<<" "<<y1<<" de "<<obj1->getTipo()<<" con "<<obj2->getTipo()<<" *"<<endl;
               while(it3->hasNext())
               {
                 Objeto *obj3 = it3->data();
@@ -288,6 +386,7 @@ public:
           it->restart();
           if(num==1||num==0)
             run=0;
+
         }
         cout<<"********************************"<<endl;
         for(int x=0;x<SIZEX;x++)
