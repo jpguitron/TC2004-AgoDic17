@@ -1,3 +1,8 @@
+/*
+Juan Pablo Güitrón Leal
+A01019936
+Evaluación 2
+*/
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -76,8 +81,6 @@ class GalaxiaLejana
 {
    public:
     GalaxiaLejana(){}
-
-  public:
     static GalaxiaLejana* getInstance()
     {
       if(!instance)
@@ -120,24 +123,6 @@ public:
   {
     return s;
   }
-  /*void move()
-  {
-    if(s)
-    {
-      y = rand() % SIZEY;
-      x = rand() % SIZEX;
-      while(blocked[x][y]==1)
-      {
-        y = rand() % SIZEY;
-        x = rand() % SIZEX;
-      }
-    }
-    else
-    {
-      y=-1;
-      x=-1;
-    }
-  }*/
 
   void begin()
   {
@@ -323,19 +308,7 @@ public:
         {
           Objeto* obj = it->data();
           obj->move();
-          /*if(obj->getX()!=-1)
-          cout<<obj->getX()<<" "<<obj->getY()<<endl;*/
         }
-        //cout<<"------------------"<<endl;
-        /*cout<<"********************************"<<endl;
-        for(int x=0;x<SIZEX;x++)
-        {
-          cout<<"***** ";
-          for(int y=0;y<SIZEY;y++)
-            cout<<tab[y][x]<<" ";
-          cout<<"******"<<endl;
-        }
-        cout<<"********************************"<<endl;*/
         it->restart();
 
         int x1;
